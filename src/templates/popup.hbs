@@ -1,10 +1,14 @@
 {{#unless isRegistered}}
-  Is this a technical document?<br>
-  <a href="https://github.com/TechDocs/TechDocs/tree/gh-pages/sitefiles">Let's make PR to add it to TechDocs!</a>
+  <p>
+    Is this a technical document?<br>
+    <a href="https://github.com/TechDocs/TechDocs/tree/gh-pages/sitefiles">Let's make PR to add it to TechDocs!</a>
+  </p>
 {{else}}
   {{#unless isTranslated}}
-    This document is already registered. Do you know the translation for it?<br>
-    <a href="https://github.com/TechDocs/TechDocs/tree/gh-pages/sitefiles">Let's make PR to add it to TechDocs!</a>
+    <p>
+      This document is already registered. Do you know the translation for it?<br>
+      <a href="https://github.com/TechDocs/TechDocs/tree/gh-pages/sitefiles">Let's make PR to add it to TechDocs!</a>
+    </p>
   {{else}}
     <ul>
     {{#each related}}
