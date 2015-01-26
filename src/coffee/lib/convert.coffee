@@ -26,7 +26,6 @@ filter = (str, fs, direction) ->
       when 'snake2camel' then f_snake2camel str, direction
       when 'replace' then f_replace str, direction
       else str
-  console.log str
   str
 
 f_camel2snake = (str, direction) ->
@@ -45,23 +44,24 @@ f_replace = (str, direction) ->
 convert = (path, rules, reverseFlag = false) ->
   path = path.replace /^\//, ''
 
-  for rule in rules
-    fs = rule.split /\|/
-    fs = fs.map (v) -> v.trim()
-    fromTo = fs.shift()
+  if rules
+    for rule in rules
+      fs = rule.split /\|/
+      fs = fs.map (v) -> v.trim()
+      fromTo = fs.shift()
 
-    if found = fromTo.match /^(.+?)\s*(>|<)\s*(.+?)$/
-      direction = (found[2] == '>')
-      direction = !direction if reverseFlag
-      from = if direction then found[1] else found[3]
-      to = if direction then found[3] else found[1]
+      if found = fromTo.match /^(.+?)\s*(>|<)\s*(.+?)$/
+        direction = (found[2] == '>')
+        direction = !direction if reverseFlag
+        from = if direction then found[1] else found[3]
+        to = if direction then found[3] else found[1]
 
-      re = createRegExp from
+        re = createRegExp from
 
-      #console.log path, re, fs, re.test path
+        #console.log path, re, fs, re.test path
 
-      if re.test path
-        return path.replace re, createReplacer to, fs, direction
+        if re.test path
+          return path.replace re, createReplacer to, fs, direction
 
   ''
 
