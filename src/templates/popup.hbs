@@ -1,6 +1,16 @@
-<ul>
-{{#each related}}
-  <li><a href="{{url}}">{{language}} | {{title}}</a></li>
-{{/each}}
-</ul>
+{{#unless isRegistered}}
+  Is this a technical document?<br>
+  <a href="https://github.com/TechDocs/TechDocs/tree/gh-pages/sitefiles">Let's make PR to add it to TechDocs!</a>
+{{else}}
+  {{#unless isTranslated}}
+    This document is already registered. Do you know the translation for it?<br>
+    <a href="https://github.com/TechDocs/TechDocs/tree/gh-pages/sitefiles">Let's make PR to add it to TechDocs!</a>
+  {{else}}
+    <ul>
+    {{#each related}}
+      <li><a href="{{url}}"><span class="language">{{language}}</span> {{title}}</a></li>
+    {{/each}}
+    </ul>
+  {{/unless}}
+{{/unless}}
 <footer>TechDocs</footer>

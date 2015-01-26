@@ -5,13 +5,13 @@ template  = require '../templates/popup.hbs'
 domready ->
   chrome.tabs.getSelected window.id, (tab) ->
     site = datastore.getSiteByUrl tab.url
+    related = if site then datastore.getRelatedSites site.id else []
 
     dom = document.body
     dom.innerHTML = template
-      title:    site.title
-      url:      site.url
-      language: site.language
-      related:  if site then datastore.getRelatedSites site.id else []
+      isRegistered: site isnt null
+      isTranslated: related.length > 0
+      related: related
 
     for el in dom.getElementsByTagName 'a'
       el.addEventListener 'click', (e) =>

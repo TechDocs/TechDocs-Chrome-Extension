@@ -7,9 +7,27 @@ body > ul {
   padding: 0;
   list-style: none;
 }
+body > ul > li {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+a {
+  outline: none;
+  text-decoration: none;
+}
+
+.language {
+  background: #999;
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: .5em;
+}
 
 body > footer {
+  border-top: 1px solid #ddd;
   padding-top: 5px;
+  margin-top: 5px;
   color: #ccc;
   text-align: center;
 }
