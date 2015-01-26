@@ -17,4 +17,5 @@ domready ->
       el.addEventListener 'click', (e) =>
         e.preventDefault()
         chrome.tabs.update tab.id, url: el.getAttribute 'href'
+        window.close()
       , false
