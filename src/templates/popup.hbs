@@ -10,9 +10,16 @@
       <a href="https://github.com/TechDocs/TechDocs/tree/gh-pages/sitefiles">Let's make PR to add it to TechDocs!</a>
     </p>
   {{else}}
+    <header>
+      {{group}}
+    </header>
     <ul>
     {{#each related}}
-      <li><a href="{{url}}"><span class="language">{{language}}</span> {{title}}</a></li>
+      {{#if isSelf}}
+        <li><div class="is-self"><span class="language">{{language}}</span> {{title}}</div></li>
+      {{else}}
+        <li><a href="{{url}}"><span class="language">{{language}}</span> {{title}}</a></li>
+      {{/if}}
     {{/each}}
     </ul>
   {{/unless}}

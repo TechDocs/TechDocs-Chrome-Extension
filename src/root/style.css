@@ -28,7 +28,8 @@ body > ul {
 }
 body > ul > li {
 }
-body > ul > li > a {
+body > ul > li > a,
+body > ul > li > div {
   display: block;
   color: inherit;
   white-space: nowrap;
@@ -37,8 +38,17 @@ body > ul > li > a {
   overflow: hidden;
   padding: 0 1em;
 }
+body > ul > li > div.is-self {
+  opacity: .3;
+}
 body > ul > li > a:hover {
   background: rgba(0,0,0,.1);
+}
+body > header {
+  border-bottom: 1px dotted #ddd;
+  padding: .9em 1em .9em;
+  color: #ccc;
+  text-align: center;
 }
 body > footer {
   border-top: 1px dotted #ddd;
