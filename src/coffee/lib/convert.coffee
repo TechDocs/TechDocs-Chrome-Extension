@@ -20,25 +20,24 @@ createReplacer = (str, fs, direction) ->
 filter = (str, fs, direction) ->
   for f in fs
     args = f.split /\s*:\s*/
-    command = args.shift
+    command = args.shift()
     str = switch command
       when 'camel2snake' then f_camel2snake str, direction
       when 'snake2camel' then f_snake2camel str, direction
       when 'replace' then f_replace str, direction
       else str
+  console.log str
   str
 
 f_camel2snake = (str, direction) ->
-  if direction
-    changeCase.snakeCase str
-  else
-    changeCase.camelCase str
+  str.split '/'
+  .map if direction then changeCase.snakeCase else changeCase.camelCase
+  .join '/'
 
 f_snake2camel = (str, direction) ->
-  if direction
-    changeCase.camelCase str
-  else
-    changeCase.snakeCase str
+  str.split '/'
+  .map if direction then changeCase.camelCase else changeCase.snakeCase
+  .join '/'
 
 f_replace = (str, direction) ->
   # TODO
@@ -59,7 +58,7 @@ convert = (path, rules, reverseFlag = false) ->
 
       re = createRegExp from
 
-      console.log path, re, re.test path
+      #console.log path, re, fs, re.test path
 
       if re.test path
         return path.replace re, createReplacer to, fs, direction
