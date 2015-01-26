@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "TechDocs",
+  "description": "The technical document curation service for you",
+  "version": "0.0.1",
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "permissions": [
+    "tabs",
+    "http://techdocs.github.io/TechDocs"
+  ],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": "btn-gray.png"
+  },
+  "web_accessible_resources": [
+    "popup.*",
+    "background.*",
+    "lang-*.png"
+  ]
+}
