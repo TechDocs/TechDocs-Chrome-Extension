@@ -17,19 +17,19 @@ a {
   display: inline-block;
   font-size: 90%;
 }
-body > p {
+body > div > p {
   margin: 0;
   padding: 1em;
 }
-body > ul {
+body > div > ul {
   margin: 0;
   padding: .5em 0;
   list-style: none;
 }
-body > ul > li {
+body > div > ul > li {
 }
-body > ul > li > a,
-body > ul > li > div {
+body > div > ul > li > a,
+body > div > ul > li > div {
   display: block;
   color: inherit;
   white-space: nowrap;
@@ -38,19 +38,19 @@ body > ul > li > div {
   overflow: hidden;
   padding: 0 1em;
 }
-body > ul > li > div.is-self {
+body > div > ul > li > div.is-self {
   opacity: .3;
 }
-body > ul > li > a:hover {
+body > div > ul > li > a:hover {
   background: rgba(0,0,0,.1);
 }
-body > header {
+body > div > header {
   border-bottom: 1px dotted #ddd;
   padding: .9em 1em .9em;
   color: #ccc;
   text-align: center;
 }
-body > footer {
+body > div > footer {
   border-top: 1px dotted #ddd;
   padding: .3em 1em .5em;
   color: #ccc;
