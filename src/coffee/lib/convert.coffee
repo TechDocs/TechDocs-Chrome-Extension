@@ -1,5 +1,3 @@
-changeCase = require 'change-case'
-
 createRegExp = (str) ->
   str = str.replace /\$/g, '\\$'
   str = str.replace /\./g, '\\.'
@@ -23,20 +21,24 @@ filter = (str, fs, direction) ->
     command = args.shift()
     str = switch command
       when 'camel2snake' then f_camel2snake str, direction
-      when 'snake2camel' then f_snake2camel str, direction
+      when 'snake2camel' then f_camel2snake str, !direction
+      when 'dot2snake' then f_dot2snake str, direction
+      when 'snake2dot' then f_dot2snake str, !direction
       when 'replace' then f_replace str, direction
       else str
   str
 
 f_camel2snake = (str, direction) ->
-  str.split '/'
-  .map if direction then changeCase.snakeCase else changeCase.camelCase
-  .join '/'
+  if direction
+    str.replace /[A-Z]/g, (match) -> '_' + match.toLowerCase()
+  else
+    str.replace /_([a-z])/g, (match, p1) -> p1.toUpperCase()
 
-f_snake2camel = (str, direction) ->
-  str.split '/'
-  .map if direction then changeCase.camelCase else changeCase.snakeCase
-  .join '/'
+f_dot2snake = (str, direction) ->
+  if direction
+    str.replace /\./g, '_'
+  else
+    str.replace /_/g, '.'
 
 f_replace = (str, direction) ->
   # TODO
