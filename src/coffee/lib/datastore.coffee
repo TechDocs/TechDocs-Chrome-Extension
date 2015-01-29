@@ -11,13 +11,16 @@ getIndex = ->
     cache.index = JSON.parse localStorage.getItem storageId
   cache.index
 
-getSitefiles = (ids) -> Promise.all ids.map getSitefile
+getSitefiles = (ids, cb) ->
+  Promise.all ids.map getSitefile
+  .then cb
+
 getSitefile = (id) ->
   new Promise (resolve, reject) ->
     if sitefile = getSitefileFromCache id
       resolve sitefile
     else
-      updateSitefile id, (sf) -> resolve sf
+      syncSitefile id, (sf) -> resolve sf
 
 getSitefileFromCache = (id) ->
   if cache.sitefiles? and cache.sitefiles[id]?
@@ -32,7 +35,7 @@ getSitefileFromCache = (id) ->
   return false
 
 # Get the indexed data from techdocs.io
-updateIndex = (cb) ->
+syncIndex = (cb) ->
   xhr = new XMLHttpRequest()
   xhr.open 'GET', "#{ROOT_URL}/index.json", true
   xhr.onreadystatechange = ->
@@ -51,7 +54,7 @@ updateIndex = (cb) ->
   xhr.send()
 
 # Get the sitefile from techdocs.io
-updateSitefile = (id, cb) ->
+syncSitefile = (id, cb) ->
   xhr = new XMLHttpRequest()
   xhr.open 'GET', "#{ROOT_URL}/sitefiles/#{id}.json", true
   xhr.onreadystatechange = ->
@@ -90,8 +93,7 @@ getRelatedSites = (siteId, cb) ->
   relatedIds =
     id for id, site of index when origin == site.origin or origin == id
 
-  getSitefiles relatedIds
-  .then (sitefiles) ->
+  getSitefiles relatedIds, (sitefiles) ->
     for i in [0...sitefiles.length]
       sitefiles[i].isSelf = (siteId == sitefiles[i].id)
 
@@ -101,7 +103,7 @@ getRelatedSites = (siteId, cb) ->
       0
 
 module.exports =
-  updateIndex: updateIndex
+  syncIndex: syncIndex
   urlExists: urlExists
   getSiteByUrl: getSiteByUrl
   getRelatedSites: getRelatedSites

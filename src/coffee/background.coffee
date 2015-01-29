@@ -1,7 +1,7 @@
 datastore = require './lib/datastore'
 
 # TODO: cache
-datastore.updateIndex()
+datastore.syncIndex()
 
 updateButtonUI = (tab) ->
   chrome.browserAction.setTitle
