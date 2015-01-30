@@ -1,0 +1,15 @@
+<li class="translation-link">
+  <a
+    rt-if="!this.props.disabled"
+    href="#"
+    onClick="{this.props.clickHandler.bind(this, this.props.url + this.props.path)}">
+    <span class="translation-link-language">{this.props.language}</span>
+    {this.props.title}
+  </a>
+  <div
+    rt-if="this.props.disabled"
+    class="translation-link-disabled">
+    <span class="translation-link-language">{this.props.language}</span>
+    {this.props.title}
+  </div>
+</li>

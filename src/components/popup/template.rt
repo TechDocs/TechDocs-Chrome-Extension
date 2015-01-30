@@ -1,0 +1,30 @@
+<rt-require dependency="../translation-link" as="TranslationLink"/>
+<div class="popup">
+  <header>
+    {this.props.title}
+  </header>
+
+  <p rt-if="this.props.translations.length == 0">
+    Is this a technical document?<br>
+    <a href="#" onClick="{this.goto.bind(this, this.props.contributingUrl)}">Let's make PR to add it to TechDocs!</a>
+  </p>
+
+  <p rt-if="this.props.translations.length == 1">
+    This document is already registered. Do you know the translation for it?<br>
+    <a href="#" onClick="{this.goto.bind(this, this.props.contributingUrl)}">Let's make PR to add it to TechDocs!</a>
+  </p>
+
+  <ul rt-if="this.props.translations.length >= 2">
+    <TranslationLink
+      rt-repeat="t in this.props.translations"
+      url="{t.url}"
+      path="{t.path}"
+      language="{t.language}"
+      title="{t.title}"
+      clickHandler="{this.goto}"
+      disabled="{this.props.current == t.id}"
+    />
+  </ul>
+
+  <footer>TechDocs</footer>
+</div>
