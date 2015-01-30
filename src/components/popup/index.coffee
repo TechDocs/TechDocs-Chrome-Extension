@@ -1,5 +1,5 @@
 React    = require 'react/addons'
-template = require '../../templates/popup.rt.js'
+template = require './template.rt.js'
 
 module.exports = React.createFactory React.createClass
 

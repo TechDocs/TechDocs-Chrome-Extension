@@ -1,6 +1,6 @@
 domready  = require 'domready'
 React     = require 'react/addons'
-Popup     = require './lib/popup'
+Popup     = require '../components/popup/'
 datastore = require './lib/datastore'
 convert   = require './lib/convert'
 
@@ -18,6 +18,7 @@ domready ->
       url: tab.url
       tabId: tab.id
       contributingUrl: CONT_URL
+      current: ''
       translations: []
 
     unless site = datastore.getSiteByUrl props.url
@@ -28,7 +29,8 @@ domready ->
       path = props.url.replace site.url, ''
       path = convert.reverse path, site.rules if site.origin?
 
-      props.title = if site.origin? then site.origin else site.id
+      props.current = site.id
+      props.title = if site.origin then site.origin else site.id
       props.translations = results.map (result) ->
         tpath = path
         tpath = convert path, result.rules if result.origin?

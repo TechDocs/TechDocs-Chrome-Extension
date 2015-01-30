@@ -1,0 +1,21 @@
+.popup > p {
+  margin: 0;
+  padding: 1em;
+}
+.popup > ul {
+  margin: 0;
+  padding: .5em 0;
+  list-style: none;
+}
+.popup > header {
+  border-bottom: 1px dotted #ddd;
+  padding: .9em 1em .9em;
+  color: #ccc;
+  text-align: center;
+}
+.popup > footer {
+  border-top: 1px dotted #ddd;
+  padding: .3em 1em .5em;
+  color: #ccc;
+  text-align: center;
+}

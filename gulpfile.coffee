@@ -1,31 +1,36 @@
-gulp        = require 'gulp'
-streamify   = require 'gulp-streamify'
-uglify      = require 'gulp-uglify'
-sourcemaps  = require 'gulp-sourcemaps'
-changed     = require 'gulp-changed'
-coffee      = require 'gulp-coffee'
-sketch      = require 'gulp-sketch'
-merge       = require 'merge-stream'
-runSequence = require 'run-sequence'
-browserify  = require 'browserify'
-coffeeify   = require 'coffeeify'
-source      = require 'vinyl-source-stream'
-buffer      = require 'vinyl-buffer'
-rt          = require 'react-templates'
-map         = require 'map-stream'
-path        = require 'path'
-del         = require 'del'
+gulp         = require 'gulp'
+streamify    = require 'gulp-streamify'
+uglify       = require 'gulp-uglify'
+sourcemaps   = require 'gulp-sourcemaps'
+changed      = require 'gulp-changed'
+coffee       = require 'gulp-coffee'
+sketch       = require 'gulp-sketch'
+cssimport    = require 'gulp-cssimport'
+autoprefixer = require 'gulp-autoprefixer'
+minifyCss    = require 'gulp-minify-css'
+merge        = require 'merge-stream'
+runSequence  = require 'run-sequence'
+browserify   = require 'browserify'
+coffeeify    = require 'coffeeify'
+source       = require 'vinyl-source-stream'
+buffer       = require 'vinyl-buffer'
+rt           = require 'react-templates'
+map          = require 'map-stream'
+path         = require 'path'
+del          = require 'del'
 
 $ =
   root:   './src/root/*'
   coffee: ['./src/coffee/popup.coffee', './src/coffee/background.coffee']
-  rt:     './src/templates/'
+  rt:     './src/components/'
   rtopt:  modules: 'commonjs'
+  css:    './src/css/style.css'
   sketch: './src/images/*.sketch'
   dist:   './dist/'
 
 gulp.task 'default', (cb) -> runSequence 'clean', [
   'browserify'
+  'css'
   'sketch'
   'root'
 ], cb
@@ -33,7 +38,7 @@ gulp.task 'default', (cb) -> runSequence 'clean', [
 gulp.task 'clean', (cb) -> del [$.dist], -> cb()
 
 gulp.task 'rt', (cb) ->
-  gulp.src "#{$.rt}*.rt"
+  gulp.src "#{$.rt}**/*.rt"
   .pipe gulpRT $.rtopt
   .pipe gulp.dest $.rt
 
@@ -53,6 +58,13 @@ gulp.task 'browserify', ['rt'], ->
       .pipe sourcemaps.write './'
       .pipe gulp.dest $.dist
 
+gulp.task 'css', ->
+  gulp.src $.css
+  .pipe cssimport()
+  .pipe autoprefixer 'last 2 versions'
+  .pipe minifyCss keepSpecialComments: 0
+  .pipe gulp.dest $.dist
+
 gulp.task 'root', ->
   gulp.src $.root
   .pipe changed $.dist
@@ -69,8 +81,10 @@ gulp.task 'sketch', ->
 gulp.task 'watch', ->
   o = debounceDelay: 3000
   gulp.watch [
-    './src/coffee/**/*.coffee'
+    './src/**/*.coffee'
+    './src/**/*.rt'
   ], o, ['browserify']
+  gulp.watch ['./src/**/*.'], o, ['css']
   gulp.watch [$.sketch], o, ['sketch']
   gulp.watch [$.root], o, ['root']
 

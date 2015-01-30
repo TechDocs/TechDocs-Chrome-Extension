@@ -1,6 +1,7 @@
-<div>
+<rt-require dependency="../translation-link" as="TranslationLink"/>
+<div class="popup">
   <header>
-    {this.state.title}
+    {this.props.title}
   </header>
 
   <p rt-if="this.props.translations.length == 0">
@@ -14,9 +15,14 @@
   </p>
 
   <ul rt-if="this.props.translations.length >= 2">
-    <li rt-repeat="t in this.props.translations">
-      <a href="#" onClick="{this.goto.bind(this, t.url)}"><span class="language">{t.language}</span> {t.title}</a>
-    </li>
+    <TranslationLink
+      rt-repeat="t in this.props.translations"
+      url="{t.url}"
+      language="{t.language}"
+      title="{t.title}"
+      clickHandler="{this.goto}"
+      disabled="{this.props.current == t.id}"
+    />
   </ul>
 
   <footer>TechDocs</footer>
