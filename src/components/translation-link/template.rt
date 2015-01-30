@@ -2,7 +2,7 @@
   <a
     rt-if="!this.props.disabled"
     href="#"
-    onClick="{this.props.clickHandler.bind(this, this.props.url)}">
+    onClick="{this.props.clickHandler.bind(this, this.props.url + this.props.path)}">
     <span class="translation-link-language">{this.props.language}</span>
     {this.props.title}
   </a>

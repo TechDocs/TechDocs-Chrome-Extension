@@ -18,6 +18,7 @@
     <TranslationLink
       rt-repeat="t in this.props.translations"
       url="{t.url}"
+      path="{t.path}"
       language="{t.language}"
       title="{t.title}"
       clickHandler="{this.goto}"

@@ -2,8 +2,16 @@ clone = require 'clone'
 
 ROOT_URL       = 'http://techdocs.github.io/TechDocs'
 STORAGE_PREFIX = 'techdocs'
+STORAGE_TABLE  = 'sitefiles'
 
 cache = {}
+
+sorter = (col, desc = false) ->
+  sign = if desc then -1 else 1
+  (a, b) ->
+    return sign * 1    if a[col] > b[col]
+    return sign * (-1) if a[col] < b[col]
+    0
 
 getIndex = ->
   unless cache.index?
@@ -11,28 +19,33 @@ getIndex = ->
     cache.index = JSON.parse localStorage.getItem storageId
   cache.index
 
-getSitefiles = (ids, cb) ->
-  Promise.all ids.map getSitefile
-  .then cb
+getOneFromCache = (id) ->
+  if cache.rows? and cache.rows[id]?
+    return cache.rows[id]
 
-getSitefile = (id) ->
-  new Promise (resolve, reject) ->
-    if sitefile = getSitefileFromCache id
-      resolve sitefile
-    else
-      syncSitefile id, (sf) -> resolve sf
-
-getSitefileFromCache = (id) ->
-  if cache.sitefiles? and cache.sitefiles[id]?
-    return cache.sitefiles[id]
-
-  storageId = "#{STORAGE_PREFIX}-sitefile-#{id}"
-  cache.sitefiles = {} unless cache.sitefiles?
+  storageId = "#{STORAGE_PREFIX}-#{STORAGE_TABLE}-#{id}"
+  cache.rows = {} unless cache.rows?
   if str = localStorage.getItem storageId
-    cache.sitefiles[id] = JSON.parse str
-    return cache.sitefiles[id]
+    cache.rows[id] = JSON.parse str
+    return cache.rows[id]
 
   return false
+
+# Get the sitefile from techdocs.io
+syncRecord = (id, cb) ->
+  xhr = new XMLHttpRequest()
+  xhr.open 'GET', "#{ROOT_URL}/#{STORAGE_TABLE}/#{id}.json", true
+  xhr.onreadystatechange = ->
+    return unless xhr.readyState == 4
+
+    localStorage.setItem "#{STORAGE_PREFIX}-#{STORAGE_TABLE}-#{id}", xhr.responseText
+    row = JSON.parse xhr.responseText
+
+    cache.rows = {} unless cache.rows?
+    cache.rows[id] = row
+
+    cb row if cb
+  xhr.send()
 
 # Get the indexed data from techdocs.io
 syncIndex = (cb) ->
@@ -44,7 +57,7 @@ syncIndex = (cb) ->
     localStorage.setItem "#{STORAGE_PREFIX}-index", xhr.responseText
     index = JSON.parse xhr.responseText
     urllist =
-      site.url for id, site of index
+      row.url for row in index
     localStorage.setItem "#{STORAGE_PREFIX}-urllist", JSON.stringify urllist
 
     cache.index = index
@@ -53,58 +66,57 @@ syncIndex = (cb) ->
     cb index if cb
   xhr.send()
 
-# Get the sitefile from techdocs.io
-syncSitefile = (id, cb) ->
-  xhr = new XMLHttpRequest()
-  xhr.open 'GET', "#{ROOT_URL}/sitefiles/#{id}.json", true
-  xhr.onreadystatechange = ->
-    return unless xhr.readyState == 4
-
-    localStorage.setItem "#{STORAGE_PREFIX}-sitefile-#{id}", xhr.responseText
-    sitefile = JSON.parse xhr.responseText
-
-    cache.sitefiles = {} unless cache.sitefiles?
-    cache.sitefiles[id] = sitefile
-
-    cb sitefile if cb
-  xhr.send()
-
 # Check the URL exists in the list
 urlExists = (url) ->
   unless cache.urllist?
     storageId = "#{STORAGE_PREFIX}-urllist"
     cache.urllist = JSON.parse localStorage.getItem storageId
 
-  for prefix in cache.urllist
-    if 0 == url.indexOf prefix
-      return true
+  return true for prefix in cache.urllist when 0 == url.indexOf prefix
   false
 
-getSiteByUrl = (url) ->
-  for id, site of getIndex()
-    if 0 == url.indexOf site.url
-      site.id = id
-      return clone site
+# Get a record which is the prefix of `val`
+getOneMatchPrefix = (val, columns, cb) ->
+  for row in getIndex()
+    for col in columns when 0 == val.indexOf row[col]
+      if r = getOneFromCache row.id
+        row = r
+      else if cb
+        syncRecord row.id, cb
+      return clone row
   null
 
-getRelatedSites = (siteId, cb) ->
-  index = getIndex()
-  origin = index[siteId]?.origin or siteId
-  relatedIds =
-    id for id, site of index when origin == site.origin or origin == id
+# Get the list of records which match the condition
+# 1. create list from index
+# 2. try to get the data from cache or local storage
+# 3. return the list sync
+# 4. request the data to the remote
+# 5. return the list async via callback
+getListEq = (val, columns, cb) ->
+  arr = []
+  notFound = false
+  for row in getIndex()
+    for col in columns when val == row[col]
+      if r = getOneFromCache row.id
+        arr.push clone r
+      else
+        arr.push clone row
+        notFound = true
 
-  getSitefiles relatedIds, (sitefiles) ->
-    for i in [0...sitefiles.length]
-      sitefiles[i].isSelf = (siteId == sitefiles[i].id)
+  if cb and notFound
+    promises =
+      for row in arr
+        new Promise (resolve, reject) ->
+          syncRecord row.id, resolve
+    Promise.all promises
+    .then (rows) ->
+      cb rows.sort sorter 'id'
 
-    cb sitefiles.sort (a, b) ->
-      return 1 if a.language > b.language
-      return -1 if a.language < b.language
-      0
+  return arr
 
 module.exports =
   syncIndex: syncIndex
   urlExists: urlExists
-  getSiteByUrl: getSiteByUrl
-  getRelatedSites: getRelatedSites
+  getOneMatchPrefix: getOneMatchPrefix
+  getListEq: getListEq
 

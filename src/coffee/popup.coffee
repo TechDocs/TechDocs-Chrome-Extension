@@ -1,3 +1,4 @@
+_         = require 'lodash'
 domready  = require 'domready'
 React     = require 'react/addons'
 Popup     = require '../components/popup/'
@@ -6,35 +7,34 @@ convert   = require './lib/convert'
 
 CONT_URL = 'https://github.com/TechDocs/TechDocs'
 
-getSiteById = (id, sitefiles) ->
-  for sitefile in sitefiles
-    return sitefile if sitefile.id == id
-  return null
+addPath = (sitefiles, current, path) ->
+  curSf = _.find sitefiles, (obj) -> obj.id == current
+  # calculate original path
+  path = if curSf.origin? then convert.reverse path, curSf.rules else path
+  # calculate translated path for each
+  sitefiles.map (sf) ->
+    sf.path = if sf.origin? then convert path, sf.rules else path
+    sf
 
 domready ->
   chrome.tabs.getSelected window.id, (tab) ->
+    if curSf = datastore.getOneMatchPrefix tab.url, ['url']
+      curPath = tab.url.replace curSf.url, ''
+      orgId = if curSf.origin then curSf.origin else curSf.id
+
+      # At first, get data in local
+      translations = datastore.getListEq orgId, ['origin', 'id'], (results) ->
+        # If there're no cache, get data from remote
+        popup.setProps translations: addPath results, curSf.id, curPath
+      # Calculate Paths
+      translations = addPath translations, curSf.id, curPath
+
     props =
-      title: '* * *'
+      title: orgId || '* * *'
       url: tab.url
       tabId: tab.id
       contributingUrl: CONT_URL
-      current: ''
-      translations: []
+      current: curSf.id || ''
+      translations: translations || []
 
-    unless site = datastore.getSiteByUrl props.url
-      return React.render Popup(props), document.body
-
-    datastore.getRelatedSites site.id, (results) ->
-      site = getSiteById site.id, results
-      path = props.url.replace site.url, ''
-      path = convert.reverse path, site.rules if site.origin?
-
-      props.current = site.id
-      props.title = if site.origin then site.origin else site.id
-      props.translations = results.map (result) ->
-        tpath = path
-        tpath = convert path, result.rules if result.origin?
-        result.url += '/' unless /\/$/.test result.url
-        result.url += tpath
-        result
-      React.render Popup(props), document.body
+    popup = React.render Popup(props), document.body
