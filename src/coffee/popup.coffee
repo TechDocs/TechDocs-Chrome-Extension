@@ -34,7 +34,7 @@ domready ->
       url: tab.url
       tabId: tab.id
       contributingUrl: CONT_URL
-      current: curSf.id || ''
+      current: curSf?.id || ''
       translations: translations || []
 
     popup = React.render Popup(props), document.body

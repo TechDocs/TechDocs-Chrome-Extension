@@ -77,7 +77,7 @@ urlExists = (url) ->
 
 # Get a record which is the prefix of `val`
 getOneMatchPrefix = (val, columns, cb) ->
-  for row in getIndex()
+  for row in getIndex().reverse()
     for col in columns when 0 == val.indexOf row[col]
       if r = getOneFromCache row.id
         row = r
