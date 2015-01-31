@@ -14,8 +14,11 @@ sorter = (col, desc = false) ->
     0
 
 reload = ->
-  # TODO: reload function
-  console.log 'reloading'
+  localStorage.clear()
+  cache = {}
+  syncIndex ->
+    # Reload Self
+    window.location.href = 'popup.html'
 
 getIndex = ->
   unless cache.index?
