@@ -8,6 +8,7 @@ sketch       = require 'gulp-sketch'
 cssimport    = require 'gulp-cssimport'
 autoprefixer = require 'gulp-autoprefixer'
 minifyCss    = require 'gulp-minify-css'
+replace      = require 'gulp-replace'
 merge        = require 'merge-stream'
 runSequence  = require 'run-sequence'
 browserify   = require 'browserify'
@@ -24,6 +25,7 @@ $ =
   coffee: ['./src/coffee/popup.coffee', './src/coffee/background.coffee']
   rt:     './src/components/'
   rtopt:  modules: 'commonjs'
+  font:   './node_modules/font-awesome/fonts/*.woff2'
   css:    './src/css/style.css'
   sketch: './src/images/*.sketch'
   dist:   './dist/'
@@ -32,6 +34,7 @@ gulp.task 'default', (cb) -> runSequence 'clean', [
   'browserify'
   'css'
   'sketch'
+  'font-awesome'
   'root'
 ], cb
 
@@ -58,9 +61,15 @@ gulp.task 'browserify', ['rt'], ->
       .pipe sourcemaps.write './'
       .pipe gulp.dest $.dist
 
+gulp.task 'font-awesome', ->
+  gulp.src $.font
+  .pipe changed $.dist
+  .pipe gulp.dest $.dist
+
 gulp.task 'css', ->
   gulp.src $.css
   .pipe cssimport()
+  .pipe replace '../fonts/', ''
   .pipe autoprefixer 'last 2 versions'
   .pipe minifyCss keepSpecialComments: 0
   .pipe gulp.dest $.dist
@@ -84,7 +93,7 @@ gulp.task 'watch', ->
     './src/**/*.coffee'
     './src/**/*.rt'
   ], o, ['browserify']
-  gulp.watch ['./src/**/*.'], o, ['css']
+  gulp.watch ['./src/**/*.css'], o, ['css']
   gulp.watch [$.sketch], o, ['sketch']
   gulp.watch [$.root], o, ['root']
 
