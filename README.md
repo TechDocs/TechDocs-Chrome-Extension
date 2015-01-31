@@ -1,21 +1,43 @@
 # TechDocs Chrome Extension
 
-## テクニカルノート：
+[TechDocs](https://github.com/TechDocs/TechDocs) is the technical document curation service for you. This Chrome extention provides the convenient switch between languages for the toolbar of your browser.
 
-icon.png サイズは、19px角か、38px角
+## Download
 
-- サイトマッチングを正規表現などでローカルでできそうなので、ローカルに何かしらのDBを構築して見ているサイトのマッチングを行う。
-- ローカルDBにsqliteは使えない。webDBかIndexed Database APIが良さそう。Indexed Database APIのほうが今後の流れ？
+(coming soon!)
 
 
-## 実装機能：
+## Development
 
-### level1:
+### Tools
 
-- 見てるドキュメントサイトに他の言語版があればアイコンが変わるorバッチが出る。（他言語Doc有状態）
-- 他言語Doc有状態のときにアイコンをクリックすると、対応している言語・バージョンの一覧が出る。
-- 言語・バージョンをクリックすると左右いずれかからスライドで選択した言語のドキュメントサイトが表示される。（対応言語ビュー表示状態）
-- 対応言語ビュー表示状態では、どちらの画面でページ遷移してももう一つの画面でもページ遷移がされ常に対応するページが表示される。
-- 対応言語ビュー表示状態では、どちらかのビュー画面のみにし他のビューを閉じるボタンを表示する。
-- 対応言語ビュー表示状態で、2つのビューのウインドウ区切りを移動してウインドウサイズを変えられる。
+- Node.js
+- [SketchTool (Free)](http://bohemiancoding.com/sketch/tool/)
 
+We're using [Sketch.app (Paid)](http://bohemiancoding.com/sketch/) for designing works, but it's not necessary for just building. To install SketchTool, run the script below.
+
+```bash
+$ curl -L https://raw.githubusercontent.com/cognitom/dotfiles/master/lib/sketchtool.sh | sudo sh
+```
+
+Are you a Windows user? SketchTool is just for Mac. Pls comment out [this line](https://github.com/TechDocs/TechDocs-Chrome-Extension/blob/master/gulpfile.coffee#L34).
+
+### Build and Watch
+
+Install dependencies and build.
+
+```bash
+$ npm install
+```
+
+To watch CofeeScript, CSS, ...etc
+
+```bash
+$ npm start
+```
+
+## Contributors
+
+- [cognitom](https://github.com/cognitom/)
+- [jetbee](https://github.com/jetbee)
+- [kiki1980jp](https://github.com/kiki1980jp)
