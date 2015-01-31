@@ -36,5 +36,6 @@ domready ->
       contributingUrl: CONT_URL
       current: curSf?.id || ''
       translations: translations || []
+      reload: datastore.reload
 
     popup = React.render Popup(props), document.body

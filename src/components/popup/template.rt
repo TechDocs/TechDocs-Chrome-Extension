@@ -26,5 +26,12 @@
     />
   </ul>
 
-  <footer>TechDocs</footer>
+  <footer>
+    <button
+      onClick="{this.props.reload}"
+      class="popup-reload">
+      <i class="fa fa-refresh"></i>
+    </button>
+    TechDocs
+  </footer>
 </div>
