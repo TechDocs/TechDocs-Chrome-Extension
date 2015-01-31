@@ -27,3 +27,12 @@
 .popup-reload:hover {
   color: #333;
 }
+.popup-search {
+  font-size: 1.4em;
+  text-align: center;
+  width: 100%;
+}
+.popup-notfound {
+  text-align: center;
+  color: #999
+}

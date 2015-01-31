@@ -127,4 +127,4 @@ module.exports =
   getOneMatchPrefix: getOneMatchPrefix
   getListEq: getListEq
   reload: reload
-
+  getIndex: getIndex
