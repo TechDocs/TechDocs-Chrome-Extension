@@ -13,6 +13,13 @@ sorter = (col, desc = false) ->
     return sign * (-1) if a[col] < b[col]
     0
 
+reload = ->
+  localStorage.clear()
+  cache = {}
+  syncIndex ->
+    # Reload Self
+    window.location.href = 'popup.html'
+
 getIndex = ->
   unless cache.index?
     storageId = "#{STORAGE_PREFIX}-index"
@@ -119,4 +126,5 @@ module.exports =
   urlExists: urlExists
   getOneMatchPrefix: getOneMatchPrefix
   getListEq: getListEq
-
+  reload: reload
+  getIndex: getIndex
