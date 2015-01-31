@@ -24,13 +24,19 @@ Are you a Windows user? SketchTool is just for Mac. Pls comment out [this line](
 
 ### Build and Watch
 
-Install dependencies and build.
+Install dependencies.
 
 ```bash
 $ npm install
 ```
 
-To watch CofeeScript, CSS, ...etc
+Build the app.
+
+```bash
+$ gulp
+```
+
+Watch CofeeScript, CSS, ...etc
 
 ```bash
 $ npm start
