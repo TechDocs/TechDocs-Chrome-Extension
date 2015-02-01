@@ -9,6 +9,7 @@ cssimport    = require 'gulp-cssimport'
 autoprefixer = require 'gulp-autoprefixer'
 minifyCss    = require 'gulp-minify-css'
 replace      = require 'gulp-replace'
+zip          = require 'gulp-zip'
 merge        = require 'merge-stream'
 runSequence  = require 'run-sequence'
 browserify   = require 'browserify'
@@ -21,14 +22,15 @@ path         = require 'path'
 del          = require 'del'
 
 $ =
-  root:   './src/root/*'
-  coffee: ['./src/coffee/popup.coffee', './src/coffee/background.coffee']
-  rt:     './src/components/'
-  rtopt:  modules: 'commonjs'
-  font:   './node_modules/font-awesome/fonts/*.woff2'
-  css:    './src/css/style.css'
-  sketch: './src/images/*.sketch'
-  dist:   './dist/'
+  root:    './src/root/*'
+  coffee:  ['./src/coffee/popup.coffee', './src/coffee/background.coffee']
+  rt:      './src/components/'
+  rtopt:   modules: 'commonjs'
+  font:    './node_modules/font-awesome/fonts/*.woff2'
+  css:     './src/css/style.css'
+  sketch:  './src/images/*.sketch'
+  dist:    './dist/'
+  package: './dist/*'
 
 gulp.task 'default', (cb) -> runSequence 'clean', [
   'browserify'
@@ -36,7 +38,7 @@ gulp.task 'default', (cb) -> runSequence 'clean', [
   'sketch'
   'font-awesome'
   'root'
-], cb
+], 'package', cb
 
 gulp.task 'clean', (cb) -> del [$.dist], -> cb()
 
@@ -87,6 +89,14 @@ gulp.task 'sketch', ->
     scales: '1.0'
   .pipe gulp.dest $.dist
 
+gulp.task 'package', ->
+  gulp.src [
+    $.package
+    '!*.map'
+  ]
+  .pipe zip 'techdocs.zip'
+  .pipe gulp.dest './'
+
 gulp.task 'watch', ->
   o = debounceDelay: 3000
   gulp.watch [
@@ -96,6 +106,7 @@ gulp.task 'watch', ->
   gulp.watch ['./src/**/*.css'], o, ['css']
   gulp.watch [$.sketch], o, ['sketch']
   gulp.watch [$.root], o, ['root']
+  gulp.watch [$.package], o, ['package']
 
 gulpRT = (option) ->
   map (file, cb) ->

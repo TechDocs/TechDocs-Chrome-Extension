@@ -2,7 +2,12 @@
   "manifest_version": 2,
   "name": "TechDocs",
   "description": "The technical document curation service for you",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
   "background": {
     "scripts": [
       "background.js"
