@@ -44,8 +44,6 @@ f_replace = (str, direction) ->
   # TODO
 
 convert = (path, rules, reverseFlag = false) ->
-  path = path.replace /^\//, ''
-
   if rules
     for rule in rules
       fs = rule.split /\|/
