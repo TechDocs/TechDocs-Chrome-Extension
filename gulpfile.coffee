@@ -10,25 +10,24 @@ autoprefixer = require 'gulp-autoprefixer'
 minifyCss    = require 'gulp-minify-css'
 replace      = require 'gulp-replace'
 zip          = require 'gulp-zip'
+concat       = require 'gulp-concat'
 merge        = require 'merge-stream'
 runSequence  = require 'run-sequence'
 browserify   = require 'browserify'
 coffeeify    = require 'coffeeify'
+riotify      = require 'riotify'
 source       = require 'vinyl-source-stream'
 buffer       = require 'vinyl-buffer'
-rt           = require 'react-templates'
-map          = require 'map-stream'
 path         = require 'path'
 del          = require 'del'
 
 $ =
   root:    './src/root/*'
   coffee:  ['./src/coffee/popup.coffee', './src/coffee/background.coffee']
-  rt:      './src/components/'
-  rtopt:   modules: 'commonjs'
   font:    './node_modules/font-awesome/fonts/*.woff2'
   css:     './src/css/style.css'
   sketch:  './src/images/*.sketch'
+  riot:    './src/components/*.tag'
   dist:    './dist/'
   package: './dist/*'
 
@@ -42,12 +41,7 @@ gulp.task 'default', (cb) -> runSequence 'clean', [
 
 gulp.task 'clean', (cb) -> del [$.dist], -> cb()
 
-gulp.task 'rt', (cb) ->
-  gulp.src "#{$.rt}**/*.rt"
-  .pipe gulpRT $.rtopt
-  .pipe gulp.dest $.rt
-
-gulp.task 'browserify', ['rt'], ->
+gulp.task 'browserify', ->
   merge stream =
     for file in $.coffee
       browserify
@@ -55,6 +49,7 @@ gulp.task 'browserify', ['rt'], ->
         extensions: ['.coffee', '.js']
         debug: true
       .transform coffeeify
+      .transform riotify, type: 'coffeescript'
       .bundle()
       .pipe source "#{path.basename file, '.coffee'}.js"
       .pipe buffer()
@@ -100,18 +95,10 @@ gulp.task 'package', ->
 gulp.task 'watch', ->
   o = debounceDelay: 3000
   gulp.watch [
-    './src/**/*.coffee'
-    './src/**/*.rt'
+    './src/coffee/**/*.coffee'
+    './src/components/*.tag'
   ], o, ['browserify']
   gulp.watch ['./src/**/*.css'], o, ['css']
   gulp.watch [$.sketch], o, ['sketch']
   gulp.watch [$.root], o, ['root']
   gulp.watch [$.package], o, ['package']
-
-gulpRT = (option) ->
-  map (file, cb) ->
-    html = file.contents.toString()
-    js = rt.convertTemplateToReact html, option
-    file.contents = new Buffer js
-    file.path += '.js'
-    cb null, file

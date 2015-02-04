@@ -71,7 +71,7 @@
       color: #999
     }
   </style>
-  <script type="coffee-script">
+  <script type="coffeescript">
     @searchstring = ''
 
     handleChange = (e) ->

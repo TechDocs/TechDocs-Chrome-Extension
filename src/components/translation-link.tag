@@ -38,7 +38,7 @@
       font-size: 90%;
     }
   </style>
-  <script type="coffee-script">
+  <script type="coffeescript">
     click = (e) ->
       opts.clickHandler opts.url + (opts.path || '')
   </script>
