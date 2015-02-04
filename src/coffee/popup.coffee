@@ -30,11 +30,13 @@ domready ->
       translations = addPath translations, curSf.id, curPath
 
     props =
-      title: orgId || '* * *'
+      title: orgId || 'search'
       url: tab.url
       tabId: tab.id
       contributingUrl: CONT_URL
       current: curSf?.id || ''
       translations: translations || []
+      index: datastore.getIndex()
+      reload: datastore.reload
 
     popup = React.render Popup(props), document.body

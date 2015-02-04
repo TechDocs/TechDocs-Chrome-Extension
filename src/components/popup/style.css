@@ -15,7 +15,24 @@
 }
 .popup > footer {
   border-top: 1px dotted #ddd;
-  padding: .3em 1em .5em;
+  padding: .5em 1em .7em;
   color: #ccc;
   text-align: center;
+}
+.popup-reload {
+  position: absolute;
+  left: 1em;
+  color: #999;
+}
+.popup-reload:hover {
+  color: #333;
+}
+.popup-search {
+  font-size: 1.4em;
+  text-align: center;
+  width: 100%;
+}
+.popup-notfound {
+  text-align: center;
+  color: #999
 }

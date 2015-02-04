@@ -1,20 +1,26 @@
 <rt-require dependency="../translation-link" as="TranslationLink"/>
 <div class="popup">
   <header>
-    {this.props.title}
+    <input
+      class="popup-search"
+      type="search"
+      placeholder="{this.props.title}"
+      value="{this.state.searchString}"
+      onChange="{this.handleChange}"
+      />
   </header>
 
-  <p rt-if="this.props.translations.length == 0">
+  <p rt-if="!this.state.searchString && this.props.translations.length == 0">
     Is this a technical document?<br>
     <a href="#" onClick="{this.goto.bind(this, this.props.contributingUrl)}">Let's make PR to add it to TechDocs!</a>
   </p>
 
-  <p rt-if="this.props.translations.length == 1">
+  <p rt-if="!this.state.searchString && this.props.translations.length == 1">
     This document is already registered. Do you know the translation for it?<br>
     <a href="#" onClick="{this.goto.bind(this, this.props.contributingUrl)}">Let's make PR to add it to TechDocs!</a>
   </p>
 
-  <ul rt-if="this.props.translations.length >= 2">
+  <ul rt-if="!this.state.searchString && this.props.translations.length >= 2">
     <TranslationLink
       rt-repeat="t in this.props.translations"
       url="{t.url}"
@@ -23,8 +29,30 @@
       title="{t.title}"
       clickHandler="{this.goto}"
       disabled="{this.props.current == t.id}"
-    />
+      />
   </ul>
 
-  <footer>TechDocs</footer>
+  <p rt-if="this.state.searchString && !this.filtered.length"
+    class="popup-notfound">
+    Document not found.
+  </p>
+
+  <ul rt-if="this.state.searchString && this.filtered.length">
+    <TranslationLink
+      rt-repeat="t in this.filtered"
+      url="{t.url}"
+      language="{t.language}"
+      title="{t.title}"
+      clickHandler="{this.goto}"
+      />
+  </ul>
+
+  <footer>
+    <button
+      onClick="{this.props.reload}"
+      class="popup-reload">
+      <i class="fa fa-refresh"></i>
+    </button>
+    TechDocs
+  </footer>
 </div>
