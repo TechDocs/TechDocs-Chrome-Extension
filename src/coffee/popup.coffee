@@ -29,7 +29,7 @@ domready ->
       # Calculate Paths
       translations = addPath translations, curSf.id, curPath
 
-    props =
+    opts =
       title: orgId || 'search'
       url: tab.url
       tabId: tab.id
@@ -39,4 +39,4 @@ domready ->
       index: datastore.getIndex()
       reload: datastore.reload
 
-    popup = React.render Popup(props), document.body
+    riot.mount 'popup', opts
