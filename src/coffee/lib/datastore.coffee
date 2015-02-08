@@ -1,10 +1,13 @@
-clone = require 'clone'
-
 ROOT_URL       = 'http://techdocs.github.io/TechDocs'
 STORAGE_PREFIX = 'techdocs'
 STORAGE_TABLE  = 'sitefiles'
 
 cache = {}
+
+shollowCopy = (obj) ->
+  ret = {}
+  ret[key] = val for key, val of obj
+  ret
 
 sorter = (col, desc = false) ->
   sign = if desc then -1 else 1
@@ -90,7 +93,7 @@ getOneMatchPrefix = (val, columns, cb) ->
         row = r
       else if cb
         syncRecord row.id, cb
-      return clone row
+      return shollowCopy row
   null
 
 # Get the list of records which match the condition
@@ -105,9 +108,9 @@ getListEq = (val, columns, cb) ->
   for row in getIndex()
     for col in columns when val == row[col]
       if r = getOneFromCache row.id
-        arr.push clone r
+        arr.push shollowCopy r
       else
-        arr.push clone row
+        arr.push shollowCopy row
         notFound = true
 
   if cb and notFound

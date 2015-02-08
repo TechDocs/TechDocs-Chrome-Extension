@@ -1,17 +1,17 @@
 <translation-link>
   <li>
-    <a if={ !opts.disabled } href="#" onclick={ click } >
+    <a if={ clickable } href="#" onclick={ click } >
       <span class="language">{ opts.language }</span>
       { opts.title }
     </a>
-    <div if={ opts.disabled } class="disabled">
+    <div if={ !clickable } class="disabled">
       <span class="language">{ opts.language }</span>
       { opts.title }
     </div>
   </li>
   <style>
-    translation-link > a,
-    translation-link > div {
+    translation-link a,
+    translation-link div {
       display: block;
       color: inherit;
       white-space: nowrap;
@@ -20,7 +20,7 @@
       overflow: hidden;
       padding: 0 1em;
     }
-    translation-link > a:hover {
+    translation-link a:hover {
       background: rgba(0,0,0,.1);
     }
     translation-link .disabled {
@@ -39,7 +39,8 @@
     }
   </style>
   <script type="coffeescript">
-    click = (e) ->
-      opts.clickHandler opts.url + (opts.path || '')
+    @clickable = !(opts.clickable? && !opts.clickable)
+    @click = (e) =>
+      opts.handler opts.url + (opts.path || '')
   </script>
 </translation-link>

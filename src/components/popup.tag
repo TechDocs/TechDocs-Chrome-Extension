@@ -1,22 +1,22 @@
 <popup>
   <header>
-    <input class="search" type="search" placeholder="{ opts.title }"
-      value="{ searchString }" onChange="{ handleChange }" >
+    <input class="search" type="search" placeholder={ opts.title }
+      value={ searchString } onkeyup={ handleChange } >
   </header>
-  <p if={ !searchString && opts.translations.length == 0} >
+  <p if={ !searchString && translations.length == 0} >
     Is this a technical document?<br>
     <a href="#" onclick={ click } >
       Let's make PR to add it to TechDocs!</a>
   </p>
-  <p if={ !searchString && opts.translations.length == 1} >
+  <p if={ !searchString && translations.length == 1} >
     This document is already registered. Do you know the translation for it?<br>
     <a href="#" onclick={ click } >
       Let's make PR to add it to TechDocs!</a>
   </p>
-  <ul if={ !searchString && opts.translations.length >= 2} >
-    <translation-link each={ opts.translations }
+  <ul if={ !searchString && translations.length >= 2} >
+    <translation-link each={ translations }
       url={ url } path={ path } language={ language } title={ title }
-      clickHandler={ visit } disabled={ opts.current == id } />
+      handler={ parent.visit } clickable={ parent.opts.current != id } />
   </ul>
   <p if={ searchString && !filtered.length } class="notfound">
     Document not found.
@@ -24,7 +24,7 @@
   <ul if={ searchString && filtered.length } >
     <translation-link each={ filtered }
       url={ url } language={ language } title={ title }
-      clickHandler={ visit } />
+      handler={ parent.visit } />
   </ul>
   <footer>
     <button onclick={ reload } class="reload">
@@ -53,7 +53,7 @@
       color: #ccc;
       text-align: center;
     }
-    popupreload {
+    popup .reload {
       position: absolute;
       left: 1em;
       color: #999;
@@ -68,23 +68,25 @@
     }
     popup .notfound {
       text-align: center;
-      color: #999
+      color: #999;
     }
   </style>
   <script type="coffeescript">
+    @translations = opts.translations
     @searchstring = ''
+    @filtered = []
 
-    handleChange = (e) ->
+    @handleChange = (e) =>
       @searchString = e.target.value.trim().toLowerCase()
       return unless @searchString.length
       @filtered = opts.index
-        .filter (sf) -> sf.id.replace(/\-\w\w$/, '').match @searchString
+        .filter (sf) => sf.id.replace(/\-\w\w$/, '').match @searchString
         .slice 0, 10
 
-    click = (e) ->
-      this.visit opts.contributingUrl
+    @click = (e) =>
+      @visit opts.contributingUrl
 
-    visit = (url) ->
+    @visit = (url) =>
       chrome.tabs.update opts.tabId, url: url
       window.close()
   </script>
