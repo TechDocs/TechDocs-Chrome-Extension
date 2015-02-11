@@ -20,6 +20,8 @@ source       = require 'vinyl-source-stream'
 buffer       = require 'vinyl-buffer'
 path         = require 'path'
 del          = require 'del'
+gutil        = require 'gulp-util'
+which        = require('npm-which') __dirname
 
 $ =
   root:    './src/root/*'
@@ -77,6 +79,12 @@ gulp.task 'root', ->
   .pipe gulp.dest $.dist
 
 gulp.task 'sketch', ->
+  try
+    which.sync 'sketchtool'
+  catch error
+    gutil.log error
+    return
+
   gulp.src $.sketch
   .pipe sketch
     export: 'artboards'
