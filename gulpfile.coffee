@@ -20,6 +20,7 @@ rt           = require 'react-templates'
 map          = require 'map-stream'
 path         = require 'path'
 del          = require 'del'
+which        = require('npm-which') __dirname
 
 $ =
   root:    './src/root/*'
@@ -82,6 +83,12 @@ gulp.task 'root', ->
   .pipe gulp.dest $.dist
 
 gulp.task 'sketch', ->
+  try
+    which.sync 'sketchtool'
+  catch error
+    gutil.log error
+    return
+    
   gulp.src $.sketch
   .pipe sketch
     export: 'artboards'
