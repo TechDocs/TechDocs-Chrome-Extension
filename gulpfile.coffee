@@ -24,7 +24,7 @@ which        = require('npm-which') __dirname
 
 $ =
   root:    './src/root/*'
-  coffee:  ['./src/coffee/popup.coffee', './src/coffee/background.coffee']
+  coffee:  ['./src/coffee/popup.coffee', './src/coffee/addlocal.coffee', './src/coffee/background.coffee']
   rt:      './src/components/'
   rtopt:   modules: 'commonjs'
   font:    './node_modules/font-awesome/fonts/*.woff2'

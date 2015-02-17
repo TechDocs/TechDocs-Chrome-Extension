@@ -1,0 +1,34 @@
+<div class="addlocal">
+  <header>
+    <button
+      onClick="()=>location.href='popup.html'">Add</button>
+      class="popup-reload">
+      <i class="fa fa-arrow-left"></i>Back to Search
+    </button>
+    <h1>Manage your own local technical documents.</h1>
+  </header>
+    <h2>Newly add technical documents to your local environment.</h2>
+
+    Title:
+    <input
+	  name="docTitle"
+      type="text"
+      value=""
+      /><br>
+	BaseUrl:
+    <input
+	  name="baseUrl"
+      type="text"
+      value=""
+      />[?]<br>
+	PageMatchingPattern:
+    <input
+	  name="matchPattern"
+      type="text"
+      value=""
+      />[?]<br>
+	<button onClick="()=>this.add()">Add</button>
+  <footer>
+    TechDocs
+  </footer>
+</div>

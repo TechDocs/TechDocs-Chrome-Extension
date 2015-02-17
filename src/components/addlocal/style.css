@@ -1,0 +1,38 @@
+.popup > p {
+  margin: 0;
+  padding: 1em;
+}
+.popup > ul {
+  margin: 0;
+  padding: .5em 0;
+  list-style: none;
+}
+.popup > header {
+  border-bottom: 1px dotted #ddd;
+  padding: .9em 1em .9em;
+  color: #ccc;
+  text-align: center;
+}
+.popup > footer {
+  border-top: 1px dotted #ddd;
+  padding: .5em 1em .7em;
+  color: #ccc;
+  text-align: center;
+}
+.popup-reload {
+  position: absolute;
+  left: 1em;
+  color: #999;
+}
+.popup-reload:hover {
+  color: #333;
+}
+.popup-search {
+  font-size: 1.4em;
+  text-align: center;
+  width: 100%;
+}
+.popup-notfound {
+  text-align: center;
+  color: #999
+}

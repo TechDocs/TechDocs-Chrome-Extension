@@ -12,7 +12,9 @@
 
   <p rt-if="!this.state.searchString && this.props.translations.length == 0">
     Is this a technical document?<br>
-    <a href="#" onClick="{this.goto.bind(this, this.props.contributingUrl)}">Let's make PR to add it to TechDocs!</a>
+    <a href="#" onClick="{this.goto.bind(this, this.props.contributingUrl)}">Let's make PR to add it to TechDocs!</a><br>
+	or<br>
+    <a href="addlocal.html">Add to your local list and use it.</a>
   </p>
 
   <p rt-if="!this.state.searchString && this.props.translations.length == 1">
