@@ -1,7 +1,7 @@
 <div class="addlocal">
   <header>
     <button
-      onClick="()=>location.href='popup.html'">Add</button>
+      onClick="()=>location.href='popup.html'"
       class="popup-reload">
       <i class="fa fa-arrow-left"></i>Back to Search
     </button>
