@@ -20,6 +20,7 @@ rt           = require 'react-templates'
 map          = require 'map-stream'
 path         = require 'path'
 del          = require 'del'
+gutil        = require 'gulp-util'
 which        = require('npm-which') __dirname
 
 $ =

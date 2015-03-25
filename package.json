@@ -37,6 +37,7 @@
   },
   "scripts": {
     "start": "gulp watch",
+    "gulp": "gulp",
     "test": "jest"
   },
   "jest": {
