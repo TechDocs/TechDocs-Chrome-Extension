@@ -1,2 +1,11 @@
 @import url('../../node_modules/font-awesome/css/font-awesome.css');
-@import url('base.css');
+
+body {
+  width: 240px;
+  min-height: 100px;
+  margin: 0;
+}
+a {
+  outline: none;
+  text-decoration: none;
+}
