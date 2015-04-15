@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "font-awesome": "^4.3.0",
-    "riot": "^2.0.8"
+    "riot": "^2.0.14"
   },
   "devDependencies": {
     "browserify": "^8.1.1",
@@ -29,7 +29,7 @@
     "map-stream": "0.0.5",
     "merge-stream": "^0.1.7",
     "npm-which": "^2.0.0",
-    "riotify": "0.0.7",
+    "riotify": "^0.0.9",
     "run-sequence": "^1.0.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0"
