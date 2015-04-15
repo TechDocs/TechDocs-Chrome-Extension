@@ -2,8 +2,8 @@ riot      = require 'riot'
 datastore = require './lib/datastore'
 convert   = require './lib/convert'
 
-require '../components/popup.tag'
-require '../components/translation-link.tag'
+require '../components/popup.html'
+require '../components/translation-link.html'
 
 CONT_URL = 'https://github.com/TechDocs/TechDocs'
 

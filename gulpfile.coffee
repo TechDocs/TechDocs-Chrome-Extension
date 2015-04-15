@@ -29,7 +29,7 @@ $ =
   font:    './node_modules/font-awesome/fonts/*.woff2'
   css:     './src/css/style.css'
   sketch:  './src/images/*.sketch'
-  riot:    './src/components/*.tag'
+  riot:    './src/components/*.html'
   dist:    './dist/'
   package: './dist/*'
 
@@ -51,9 +51,9 @@ gulp.task 'browserify', ->
         extensions: ['.coffee', '.js']
         debug: true
       .transform coffeeify
-      .transform riotify, type: 'coffeescript'
+      .transform riotify, type: 'coffeescript', ext: 'html'
       .bundle()
-      .pipe source "#{path.basename file, '.coffee'}.js"
+      .pipe source "#{ path.basename file, '.coffee' }.js"
       .pipe buffer()
       .pipe sourcemaps.init loadMaps: true
       .pipe streamify uglify()

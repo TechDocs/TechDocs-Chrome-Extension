@@ -1,4 +1,5 @@
 <popup>
+
   <header>
     <input class="search" type="search" placeholder={ opts.title }
       value={ searchString } onkeyup={ handleChange } >
@@ -31,46 +32,7 @@
       <i class="fa fa-refresh"></i></button>
     TechDocs
   </footer>
-  <style>
-    popup > p {
-      margin: 0;
-      padding: 1em;
-    }
-    popup > ul {
-      margin: 0;
-      padding: .5em 0;
-      list-style: none;
-    }
-    popup > header {
-      border-bottom: 1px dotted #ddd;
-      padding: .9em 1em .9em;
-      color: #ccc;
-      text-align: center;
-    }
-    popup > footer {
-      border-top: 1px dotted #ddd;
-      padding: .5em 1em .7em;
-      color: #ccc;
-      text-align: center;
-    }
-    popup .reload {
-      position: absolute;
-      left: 1em;
-      color: #999;
-    }
-    popup .reload:hover {
-      color: #333;
-    }
-    popup .search {
-      font-size: 1.4em;
-      text-align: center;
-      width: 100%;
-    }
-    popup .notfound {
-      text-align: center;
-      color: #999;
-    }
-  </style>
+
   <script type="coffeescript">
     @translations = opts.translations
     @searchstring = ''
@@ -90,4 +52,49 @@
       chrome.tabs.update opts.tabId, url: url
       window.close()
   </script>
+
+  <style scoped>
+    :scope {
+      display: block;
+    }
+    p {
+      margin: 0;
+      padding: 1em;
+    }
+    ul {
+      margin: 0;
+      padding: .5em 0;
+      list-style: none;
+    }
+    :scope > header {
+      border-bottom: 1px dotted #ddd;
+      padding: .9em 1em .9em;
+      color: #ccc;
+      text-align: center;
+    }
+    :scope > footer {
+      border-top: 1px dotted #ddd;
+      padding: .5em 1em .7em;
+      color: #ccc;
+      text-align: center;
+    }
+    .reload {
+      position: absolute;
+      left: 1em;
+      color: #999;
+    }
+    .reload:hover {
+      color: #333;
+    }
+    .search {
+      font-size: 1.4em;
+      text-align: center;
+      width: 100%;
+    }
+    .notfound {
+      text-align: center;
+      color: #999;
+    }
+  </style>
+
 </popup>
