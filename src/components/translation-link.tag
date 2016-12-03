@@ -1,23 +1,23 @@
 <translation-link>
 
-  <li>
-    <a if={ clickable } href="#" onclick={ click } >
-      <span class="language">{ opts.language }</span>
-      { opts.title }
-    </a>
-    <div if={ !clickable } class="disabled">
-      <span class="language">{ opts.language }</span>
-      { opts.title }
-    </div>
-  </li>
+  <a if={ clickable } href="#" onclick={ click } >
+    <span class="language">{ opts.language }</span>
+    { opts.title }
+  </a>
+  <div if={ !clickable } class="disabled">
+    <span class="language">{ opts.language }</span>
+    { opts.title }
+  </div>
 
-  <script type="coffeescript">
-    @clickable = !(opts.clickable? && !opts.clickable)
-    @click = (e) =>
-      opts.handler opts.url + (opts.path || '')
+  <script>
+    this.clickable = opts.clickable === true || opts.clickable !== false
+    this.click = e => {
+      e.preventDefault()
+      opts.handler(opts.url + (opts.path || ''))
+    }
   </script>
 
-  <style scoped>
+  <style>
     a, div {
       display: block;
       color: inherit;
