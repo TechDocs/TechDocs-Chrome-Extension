@@ -9,37 +9,28 @@
 
 ## Development
 
-### Tools
-
-- Node.js
-- [SketchTool (Free)](http://bohemiancoding.com/sketch/tool/)
-
-We're using [Sketch.app (Paid)](http://bohemiancoding.com/sketch/) for designing works, but it's not necessary for just building. To install SketchTool, run the script below.
-
-```bash
-$ curl -L https://raw.githubusercontent.com/cognitom/dotfiles/master/lib/sketchtool.sh | sudo sh
-```
-
-Are you a Windows user? SketchTool is just for Mac. Pls comment out [this line](https://github.com/TechDocs/TechDocs-Chrome-Extension/blob/master/gulpfile.coffee#L34).
-
-### Build and Watch
-
-Install dependencies.
+Install dependencies:
 
 ```bash
 $ npm install
 ```
 
-Build the app.
+Build the app:
 
 ```bash
-$ gulp
+$ npm run build
 ```
 
-Watch CofeeScript, CSS, ...etc
+Watch:
 
 ```bash
-$ npm start
+$ npm run watch
+```
+
+Test:
+
+```bash
+$ npm test
 ```
 
 ## Contributors
