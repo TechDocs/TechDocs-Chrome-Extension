@@ -1,19 +1,20 @@
 <translation-link>
 
   <a if={ clickable } href="#" onclick={ click } >
-    <span class="language">{ opts.language }</span>
+    <span class="language">{ language }</span>
     { opts.title }
   </a>
   <div if={ !clickable } class="disabled">
-    <span class="language">{ opts.language }</span>
+    <span class="language">{ language }</span>
     { opts.title }
   </div>
 
   <script>
     this.clickable = opts.clickable === true || opts.clickable !== false
+    this.language = opts.language
     this.click = e => {
       e.preventDefault()
-      opts.handler(opts.url + (opts.path || ''))
+      this.parent.visit(opts.url + (opts.path || ''))
     }
   </script>
 

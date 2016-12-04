@@ -8,32 +8,30 @@
       value={ searchString }
       onkeyup={ handleChange }>
   </header>
-  <p if={ !searchString && translations.length == 0}>
+  <p if={ !searchString && tLength == 0}>
     Is this a technical document?<br>
     <a href="#" onclick={ visit } >Let's make PR to add it to TechDocs!</a>
   </p>
-  <p if={ !searchString && translations.length == 1}>
+  <p if={ !searchString && tLength == 1}>
     This document is already registered. Do you know the translation for it?<br>
     <a href="#" onclick={ visit } >Let's make PR to add it to TechDocs!</a>
   </p>
-  <ul if={ !searchString && translations.length >= 2}>
+  <ul if={ !searchString && tLength >= 2}>
     <li data-is="translation-link" each={ translations }
       url={ url }
       path={ path }
       language={ language }
       title={ title }
-      handler={ parent.visit }
-      clickable={ parent.opts.current != id }></li>
+      clickable={ clickable }></li>
   </ul>
-  <p if={ searchString && !filtered.length } class="notfound">
+  <p if={ searchString && !fLength } class="notfound">
     Document not found.
   </p>
-  <ul if={ searchString && filtered.length }>
+  <ul if={ searchString && fLength }>
     <li data-is="translation-link" each={ filtered }
       url={ url }
       language={ language }
-      title={ title }
-      handler={ parent.visit }></li>
+      title={ title }></li>
   </ul>
   <footer>
     <button onclick={ gohome } class="reload">
@@ -42,7 +40,9 @@
   </footer>
 
   <script>
-    this.translations = opts.translations
+    this.translations = opts.translations.map(t => Object.assign(t, { clickable: t.id !== opts.current }))
+    this.tLength = this.translations.length
+    this.fLength = 0
     this.searchString = ''
     this.filtered = []
 
@@ -58,6 +58,7 @@
       this.filtered = opts.index
         .filter(sf => sf.id.replace(/-\w\w$/, '').match(this.searchString))
         .slice(0, 10)
+      this.fLength = this.filtered.length
     }
 
     this.click = e => {
