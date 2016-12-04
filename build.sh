@@ -7,7 +7,7 @@ mkdir -p dist/
 cp src/manifest.json dist/
 cp src/popup.html dist/
 cp node_modules/font-awesome/fonts/*.woff2 dist/
-cp node_modules/riot/riot.js dist/riot.js
+cp node_modules/riot/riot.csp.js dist/riot.js
 
 if [ -f $SKTECHTOOL ]; then
   $SKTECHTOOL export artboards src/icon.sketch --format=png --scales=1.0 --output=dist/
